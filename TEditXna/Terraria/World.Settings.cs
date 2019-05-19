@@ -244,7 +244,8 @@ namespace TEditXNA.Terraria
                                     });
                 }
                 TileProperties.Add(curTile);
-                if (!curTile.IsFramed)
+                // for all title
+                //if (!curTile.IsFramed)
                     TileBricks.Add(curTile);
             }
             for (int i = TileProperties.Count; i < 255; i++)

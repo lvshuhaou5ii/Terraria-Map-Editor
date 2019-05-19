@@ -46,6 +46,7 @@ namespace TEditXna.Editor.Plugins
             int tileMask = _wvm.TilePicker.TileMask;
             int tileTarget = _wvm.TilePicker.Tile;
             int wallTarget = _wvm.TilePicker.Wall;
+            bool isErase = _wvm.TilePicker.IsEraser;
 
             for (int x = 0; x < _wvm.CurrentWorld.TilesWide; x++)
             {
@@ -81,11 +82,25 @@ namespace TEditXna.Editor.Plugins
                     {
                         _wvm.UndoManager.SaveTile(x, y);
 
+                        // add erase function.
                         if (doReplaceTile)
-                            curTile.Type = (ushort)tileTarget;
+                        {
+                            if (isErase)
+                            {
+                                curTile.Type = 0;
+                                curTile.IsActive = false;
+                                curTile.InActive = false;
+                                curTile.Actuator = false;
+                                curTile.BrickStyle = BrickStyle.Full;
+                                curTile.U = 0;
+                                curTile.V = 0;
+                            }
+                            else
+                                curTile.Type = (ushort)tileTarget;
+                        }
 
                         if (doReplaceWall)
-                            curTile.Wall = (byte)wallTarget;
+                            curTile.Wall = (byte)(isErase ? 0 : wallTarget);
 
                         _wvm.UpdateRenderPixel(x, y);
                     }
